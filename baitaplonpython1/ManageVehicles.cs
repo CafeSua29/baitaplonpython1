@@ -39,42 +39,49 @@ namespace baitaplonpython1
             return ticket;
         }
 
-        public Vehicle? VehicleOut(Vehicle vehicle, Ticket ticket) 
+        public Vehicle? VehicleOut(Vehicle vehicle, Ticket ticket, string? vehicleinfo) 
         {
             if(ListVehicles.Contains(vehicle))
             {
                 if (ticket == null)
                 {
+                    int save = ListTicket.Count;
 
-                }
-                else
-                {
-                    Receipt receipt = new Receipt(vehicle, ticket);
-                    receipt.TimeIn = ticket.TimeIn;
-
-                    if (ListReceipt.Contains(receipt))
+                    for(int i = ListReceipt.Count - 1; i >= 0; i--)
                     {
-                        ListReceipt.Remove(receipt);
+                        if (ListReceipt[i].Vehicle.LicensePlate == vehicleinfo)
+                        {
+                            save = i;
 
-                        receipt.TimeOut = DateTime.Now;
+                            break;
+                        }
+                    }
+
+                    if(save < ListReceipt.Count)
+                    {
+                        int passday = DateTime.Now.Day - ListReceipt[save].TimeIn.Day;
 
                         if (vehicle.Type == "motorbike")
                         {
-                            if (receipt.TimeOut.Hour < 18 && receipt.TimeOut.Hour > 8)
+                            if (DateTime.Now.Hour < 18 && DateTime.Now.Hour > 8)
                             {
-                                receipt.Total = 3000;
+                                ListReceipt[save].Total = 3000 + passday * 35000 + 60000;
 
-                                Turnover += receipt.Total;
+                                Turnover += ListReceipt[save].Total;
+
+                                ListReceipt[save].TimeOut = DateTime.Now;
 
                                 ListVehicles.Remove(vehicle);
 
                                 return vehicle;
                             }
-                            else if (receipt.TimeOut.Hour < 22 && receipt.TimeOut.Hour >= 18)
+                            else if (DateTime.Now.Hour < 22 && DateTime.Now.Hour >= 18)
                             {
-                                receipt.Total = 6000;
+                                ListReceipt[save].Total = 6000 + passday * 35000 + 60000;
 
-                                Turnover += receipt.Total;
+                                Turnover += ListReceipt[save].Total;
+
+                                ListReceipt[save].TimeOut = DateTime.Now;
 
                                 ListVehicles.Remove(vehicle);
 
@@ -88,21 +95,25 @@ namespace baitaplonpython1
                         }
                         else
                         {
-                            if (receipt.TimeOut.Hour < 18 && receipt.TimeOut.Hour > 8)
+                            if (DateTime.Now.Hour < 18 && DateTime.Now.Hour > 8)
                             {
-                                receipt.Total = 2000;
+                                ListReceipt[save].Total = 2000 + passday * 15000 + 30000;
 
-                                Turnover += receipt.Total;
+                                Turnover += ListReceipt[save].Total;
+
+                                ListReceipt[save].TimeOut = DateTime.Now;
 
                                 ListVehicles.Remove(vehicle);
 
                                 return vehicle;
                             }
-                            else if (receipt.TimeOut.Hour < 22 && receipt.TimeOut.Hour >= 18)
+                            else if (DateTime.Now.Hour < 22 && DateTime.Now.Hour >= 18)
                             {
-                                receipt.Total = 4000;
+                                ListReceipt[save].Total = 4000 + passday * 15000 + 30000;
 
-                                Turnover += receipt.Total;
+                                Turnover += ListReceipt[save].Total;
+
+                                ListReceipt[save].TimeOut = DateTime.Now;
 
                                 ListVehicles.Remove(vehicle);
 
@@ -110,6 +121,103 @@ namespace baitaplonpython1
                             }
                             else
                             {
+                                return null;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    DateTime save = ticket.TimeIn;
+
+                    Receipt receipt = new Receipt(vehicle, ticket);
+                    ticket.TimeIn = save;
+                    receipt.TimeIn = ticket.TimeIn;
+
+                    if (ListReceipt.Contains(receipt))
+                    {
+                        ListReceipt.Remove(receipt);
+
+                        ticket.TimeOut = DateTime.Now;
+
+                        int passday = ticket.TimeOut.Day - receipt.TimeIn.Day;
+
+                        if (vehicle.Type == "motorbike")
+                        {
+                            if (receipt.TimeOut.Hour < 18 && receipt.TimeOut.Hour > 8)
+                            {
+                                receipt.Total = 3000 + passday * 35000;
+
+                                Turnover += receipt.Total;
+
+                                receipt.TimeOut = DateTime.Now;
+
+                                ListReceipt.Add(receipt);
+
+                                ListVehicles.Remove(vehicle);
+
+                                return vehicle;
+                            }
+                            else if (receipt.TimeOut.Hour < 22 && receipt.TimeOut.Hour >= 18)
+                            {
+                                receipt.Total = 6000 + passday * 35000;
+
+                                Turnover += receipt.Total;
+
+                                receipt.TimeOut = DateTime.Now;
+
+                                ListReceipt.Add(receipt);
+
+                                ListVehicles.Remove(vehicle);
+
+                                return vehicle;
+                            }
+                            else
+                            {
+                                ListReceipt.Add(receipt);
+
+                                return null;
+                            }
+
+                        }
+                        else
+                        {
+                            if (receipt.TimeOut.Hour < 18 && receipt.TimeOut.Hour > 8)
+                            {
+                                receipt.Total = 2000 + passday * 15000;
+
+                                Turnover += receipt.Total;
+
+                                receipt.TimeOut = DateTime.Now;
+
+                                ListReceipt.Add(receipt);
+
+                                ListVehicles.Remove(vehicle);
+
+                                return vehicle;
+                            }
+                            else if (receipt.TimeOut.Hour < 22 && receipt.TimeOut.Hour >= 18)
+                            {
+                                receipt.Total = 4000 + passday * 15000;
+
+                                Turnover += receipt.Total;
+
+                                receipt.TimeOut = DateTime.Now;
+
+                                ListReceipt.Add(receipt);
+
+                                ListVehicles.Remove(vehicle);
+
+                                return vehicle;
+                            }
+                            else
+                            {
+                                ListReceipt.Add(receipt);
+
                                 return null;
                             }
                         }
