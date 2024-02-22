@@ -13,9 +13,9 @@ Ticket ticket1 = managevehicles.VehicleIn(vehicle1);
 
 DateTime save = ticket1.TimeIn;
 
-Receipt receipt = new Receipt(vehicle1, ticket1);
-ticket1.TimeIn = save;
-receipt.TimeIn = ticket1.TimeIn;
+//Receipt receipt = new Receipt(vehicle1, ticket1);
+//ticket1.TimeIn = save;
+//receipt.TimeIn = ticket1.TimeIn;
 
 //Console.WriteLine(managevehicles.ListReceipt[0].Vehicle.LicensePlate);
 //Console.WriteLine(receipt.Vehicle.LicensePlate);

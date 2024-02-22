@@ -143,14 +143,25 @@ namespace baitaplonpython1
                 else
                 {
                     DateTime save = ticket.TimeIn;
+                    int shape = ListReceipt.Count;
 
                     Receipt receipt = new Receipt(vehicle, ticket);
                     ticket.TimeIn = save;
                     receipt.TimeIn = ticket.TimeIn;
 
-                    if (ListReceipt.Contains(receipt))
+                    for (int i = ListReceipt.Count - 1; i >= 0; i--)
                     {
-                        ListReceipt.Remove(receipt);
+                        if (ListReceipt[i].Equals(receipt))
+                        {
+                            shape = i;
+
+                            break;
+                        }
+                    }
+
+                    if (shape < ListReceipt.Count)
+                    {
+                        ListReceipt.RemoveAt(shape);
 
                         ticket.TimeOut = DateTime.Now;
 
