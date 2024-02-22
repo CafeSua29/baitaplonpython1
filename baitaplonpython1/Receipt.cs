@@ -18,9 +18,9 @@ namespace baitaplonpython1
         public Receipt(Vehicle vehicle, Ticket ticket) 
         {
             Vehicle = vehicle;
-            Ticket = ticket;
             TimeIn = DateTime.Now;
-            ticket.TimeIn = DateTime.Now;
+            ticket.TimeIn = TimeIn;
+            Ticket = ticket;
         }
 
     }

@@ -11,14 +11,16 @@ namespace baitaplonpython1
         public List<Vehicle> ListVehicles;
         public List<Ticket> ListTicket;
         public List<Receipt> ListReceipt;
-        public double Turnover;
+        public double Turnovermotorbike;
+        public double Turnoverbike;
 
         public ManageVehicles(int vehicleamount) 
         {
             ListVehicles = new List<Vehicle>();
             ListTicket = new List<Ticket>();
             ListReceipt = new List<Receipt>();
-            Turnover = 0.0;
+            Turnovermotorbike = 0.0;
+            Turnoverbike = 0.0;
 
             for (int i = 0; i < vehicleamount; i++) 
             {
@@ -67,11 +69,13 @@ namespace baitaplonpython1
                             {
                                 ListReceipt[save].Total = 3000 + passday * 35000 + 60000;
 
-                                Turnover += ListReceipt[save].Total;
+                                Turnovermotorbike += ListReceipt[save].Total;
 
                                 ListReceipt[save].TimeOut = DateTime.Now;
+                                ListReceipt[save].isLossTicket = true;
 
                                 ListVehicles.Remove(vehicle);
+                                ListTicket.Add(ticket);
 
                                 return vehicle;
                             }
@@ -79,11 +83,13 @@ namespace baitaplonpython1
                             {
                                 ListReceipt[save].Total = 6000 + passday * 35000 + 60000;
 
-                                Turnover += ListReceipt[save].Total;
+                                Turnovermotorbike += ListReceipt[save].Total;
 
                                 ListReceipt[save].TimeOut = DateTime.Now;
+                                ListReceipt[save].isLossTicket = true;
 
                                 ListVehicles.Remove(vehicle);
+                                ListTicket.Add(ticket);
 
                                 return vehicle;
                             }
@@ -99,11 +105,13 @@ namespace baitaplonpython1
                             {
                                 ListReceipt[save].Total = 2000 + passday * 15000 + 30000;
 
-                                Turnover += ListReceipt[save].Total;
+                                Turnoverbike += ListReceipt[save].Total;
 
                                 ListReceipt[save].TimeOut = DateTime.Now;
+                                ListReceipt[save].isLossTicket = true;
 
                                 ListVehicles.Remove(vehicle);
+                                ListTicket.Add(ticket);
 
                                 return vehicle;
                             }
@@ -111,11 +119,13 @@ namespace baitaplonpython1
                             {
                                 ListReceipt[save].Total = 4000 + passday * 15000 + 30000;
 
-                                Turnover += ListReceipt[save].Total;
+                                Turnoverbike += ListReceipt[save].Total;
 
                                 ListReceipt[save].TimeOut = DateTime.Now;
+                                ListReceipt[save].isLossTicket = true;
 
                                 ListVehicles.Remove(vehicle);
+                                ListTicket.Add(ticket);
 
                                 return vehicle;
                             }
@@ -152,13 +162,14 @@ namespace baitaplonpython1
                             {
                                 receipt.Total = 3000 + passday * 35000;
 
-                                Turnover += receipt.Total;
+                                Turnovermotorbike += receipt.Total;
 
                                 receipt.TimeOut = DateTime.Now;
 
                                 ListReceipt.Add(receipt);
 
                                 ListVehicles.Remove(vehicle);
+                                ListTicket.Add(ticket);
 
                                 return vehicle;
                             }
@@ -166,13 +177,14 @@ namespace baitaplonpython1
                             {
                                 receipt.Total = 6000 + passday * 35000;
 
-                                Turnover += receipt.Total;
+                                Turnovermotorbike += receipt.Total;
 
                                 receipt.TimeOut = DateTime.Now;
 
                                 ListReceipt.Add(receipt);
 
                                 ListVehicles.Remove(vehicle);
+                                ListTicket.Add(ticket);
 
                                 return vehicle;
                             }
@@ -190,13 +202,14 @@ namespace baitaplonpython1
                             {
                                 receipt.Total = 2000 + passday * 15000;
 
-                                Turnover += receipt.Total;
+                                Turnoverbike += receipt.Total;
 
                                 receipt.TimeOut = DateTime.Now;
 
                                 ListReceipt.Add(receipt);
 
                                 ListVehicles.Remove(vehicle);
+                                ListTicket.Add(ticket);
 
                                 return vehicle;
                             }
@@ -204,13 +217,14 @@ namespace baitaplonpython1
                             {
                                 receipt.Total = 4000 + passday * 15000;
 
-                                Turnover += receipt.Total;
+                                Turnoverbike += receipt.Total;
 
                                 receipt.TimeOut = DateTime.Now;
 
                                 ListReceipt.Add(receipt);
 
                                 ListVehicles.Remove(vehicle);
+                                ListTicket.Add(ticket);
 
                                 return vehicle;
                             }
@@ -232,6 +246,41 @@ namespace baitaplonpython1
             {
                 return null;
             }
+        }
+
+        public int getAmountVehicle()
+        {
+            return ListVehicles.Count;
+        }
+
+        public double getTurnoverMotorbike()
+        {
+            return Turnovermotorbike;
+        }
+
+        public double getTurnoverBike()
+        {
+            return Turnoverbike;
+        }
+
+        public double getTurnover()
+        {
+            return Turnovermotorbike + Turnoverbike;
+        }
+
+        public List<Vehicle> listVehiclelostTicket()
+        {
+            List<Vehicle> listvehiclelostticket = new List<Vehicle>();
+
+            foreach(Receipt receipt in ListReceipt)
+            {
+                if(receipt.isLossTicket)
+                {
+                    listvehiclelostticket.Add(receipt.Vehicle);
+                }
+            }
+
+            return listvehiclelostticket;
         }
     }
 }
